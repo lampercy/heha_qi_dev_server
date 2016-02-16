@@ -7,7 +7,7 @@
 * Get Friends
 * Add Friend
 * Invite Friend
-* Invited Friends
+* Get Invited Friends
 * Create Chat
 * Get Chats
 * Get Chat
@@ -415,7 +415,7 @@
 
 ## Add Participants
 
-**Description:** add participants to a chat
+**Description:** Add participants to a chat
 
 **Route:** /chats/:id/participants
 
@@ -476,7 +476,7 @@
 
 ## Remove Participants
 
-**Description:** remove participants from a chat
+**Description:** Remove participants from a chat
 
 **Route:** /chats/:id/participants
 
