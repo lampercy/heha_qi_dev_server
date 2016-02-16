@@ -17,7 +17,6 @@
 * Remove Participants
 * Join Chat
 * Create Battle
-* Update Battle Step
 
 ## Get Current User
 
@@ -36,7 +35,7 @@
     "name": "Percy BB",
     "avatar_url": "http://example.com/avatars/1/thumb.jpg",
     "jid": "ee7ff143a2a549cb95cb24f758c55919@example.com",
-    "jpw": "c2932c58a1fc448dac5e86631f5364e5" // server generated jid and password
+    "jpw": "c2932c58a1fc448dac5e86631f5364e5" // server-generated jid and password
   },
 }
 ```
@@ -99,7 +98,7 @@
 
 ## Add Friend
 
-**Description:** add user as a friend of the current user
+**Description:** Add user as a friend of the current user
 
 **Route:** /friends
 
@@ -133,7 +132,7 @@
 
 ## Invite Friend
 
-**Description:** invite a friend to join heha
+**Description:** Invite a friend to join heha
 
 **Route:** /invites
 
@@ -164,7 +163,7 @@
 
 ## Get Invited Friends
 
-**Description:** get all invites sent by current user
+**Description:** Get all invites sent by current user
 
 **Route:** /invites
 
@@ -190,7 +189,7 @@
 
 ## Create Chat
 
-**Description:** create a chat (either direct message or group chat)
+**Description:** Create a chat (either direct message or group chat)
 
 **Route:** /chats
 
@@ -227,7 +226,7 @@
     "photo_url": "http://example.com/photos/1/thumb.jpg",
     "battles": [],
     "is_having_battle": false
-    
+    "invite_key": '58f271380b86489ba147ed048939ff24' // server-generated invite key
   }
 }
 ```
@@ -241,7 +240,7 @@
 
 ## Get Chats
 
-**Description:** get the chats in which the current user is participating
+**Description:** Get the chats in which the current user is participating
 
 **Route:** /chats
 
@@ -267,7 +266,8 @@
         "jid": "ee7ff143a2a549cb95cb24f758c55919@example.com"
       }
       "last_message_sent_at": 12569537329,
-      "is_having_battle": true
+      "is_having_battle": true,
+      "invite_key": '58f271380b86489ba147ed048939ff24'
     }, 
     ...
   ]
@@ -278,7 +278,7 @@
 
 ## Get Chat
 
-**Description:** get the details of a chat
+**Description:** Get the details of a chat
 
 **Route:** /chats/:id
 
@@ -303,6 +303,7 @@
     "jid": "my_chat_group-65ec9a385ee540c892527bca5ca3f936@example.com",
     "photo_url": "http://example.com/photos/1/thumb.jpg",
     "is_having_battle": true,
+    "invite_key": '58f271380b86489ba147ed048939ff24',
     "battles": [
       {
         "id": 1234,
@@ -314,7 +315,7 @@
         },
         "current": true,
         "started_at": 12569537329,
-        "finished_at": 12569637329
+        "ended_at": 12569637329
       },
       ...
     ]
@@ -324,7 +325,7 @@
 
 ## Update Chat
 
-**Description:** update the details of a chat (only for group chat)
+**Description:** Update the details of a chat (only for group chat)
 
 **Route:** /chats/:id
 
@@ -336,8 +337,11 @@
 | photo| <code>Base64</code> | |
 
 **Response:**
+
+* success
 ```
 {
+  "success": true,
   "chat": {
     "id": 1234,
     "is_direct_message": false,
@@ -354,21 +358,281 @@
     "jid": "my_chat_group-65ec9a385ee540c892527bca5ca3f936@example.com",
     "photo_url": "http://example.com/photos/1/thumb.jpg",
     "is_having_battle": true,
+    "invite_key": '58f271380b86489ba147ed048939ff24',
     "battles": [
       {
         "id": 1234,
         "chat_id": 1234,
+        "current": true,
+        "started_at": 12569537329,
+        "ended_at": 12569637329,
         "steps": {
           "1234": 8000,
           "2234": 3000,
           "3244": 4000
         },
-        "current": true,
-        "started_at": 12569537329,
-        "finished_at": 12569637329
       },
       ...
     ]
   }
+}
+```
+
+* fail
+```
+{
+  "success": false
+}
+```
+
+## Update Last Message
+
+**Description:** Update the last message of a chat
+
+**Route:** /chats/:id/last_message
+
+**Method:** PUT
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| body | <code>String</code> | message body|
+
+**Response:**
+
+* success 
+```
+{
+  "success": true
+}
+```
+
+* fail
+```
+{
+  "success": false
+}
+```
+
+## Add Participants
+
+**Description:** add participants to a chat
+
+**Route:** /chats/:id/participants
+
+**Method:** POST
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| participant_ids | <code>Array</code> | |
+
+**Response:**
+
+* success 
+```
+{
+  "success": true
+  "chat": {
+    "id": 1234,
+    "is_direct_message": false,
+    "name": "My Chat Group",
+    "participants": [
+      {
+        "id": 1234,
+        "name": "Percy BB",
+        "avatar_url": "http://example.com/avatars/1/thumb.jpg",
+        "jid": "ee7ff143a2a549cb95cb24f758c55919@example.com"
+      },
+      ...
+    ],
+    "jid": "my_chat_group-65ec9a385ee540c892527bca5ca3f936@example.com",
+    "photo_url": "http://example.com/photos/1/thumb.jpg",
+    "is_having_battle": true,
+    "invite_key": '58f271380b86489ba147ed048939ff24',
+    "battles": [
+      {
+        "id": 1234,
+        "chat_id": 1234,
+        "current": true,
+        "started_at": 12569537329,
+        "ended_at": 12569637329,
+        "steps": {
+          "1234": 8000,
+          "2234": 3000,
+          "3244": 4000
+        },
+      },
+      ...
+    ]
+  }
+}
+```
+
+* fail
+```
+{
+  "success": false
+}
+```
+
+## Remove Participants
+
+**Description:** remove participants from a chat
+
+**Route:** /chats/:id/participants
+
+**Method:** DELETE
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| participant_ids | <code>Array</code> | |
+
+**Response:**
+
+* success 
+```
+{
+  "success": true
+  "chat": {
+    "id": 1234,
+    "is_direct_message": false,
+    "name": "My Chat Group",
+    "participants": [
+      {
+        "id": 1234,
+        "name": "Percy BB",
+        "avatar_url": "http://example.com/avatars/1/thumb.jpg",
+        "jid": "ee7ff143a2a549cb95cb24f758c55919@example.com"
+      },
+      ...
+    ],
+    "jid": "my_chat_group-65ec9a385ee540c892527bca5ca3f936@example.com",
+    "photo_url": "http://example.com/photos/1/thumb.jpg",
+    "is_having_battle": true,
+    "invite_key": '58f271380b86489ba147ed048939ff24',
+    "battles": [
+      {
+        "id": 1234,
+        "chat_id": 1234,
+        "current": true,
+        "started_at": 12569537329,
+        "ended_at": 12569637329,
+        "steps": {
+          "1234": 8000,
+          "2234": 3000,
+          "3244": 4000
+        },
+      },
+      ...
+    ]
+  }
+}
+```
+
+* fail
+```
+{
+  "success": false
+}
+```
+
+## Join Chat
+
+**Description:** Join a chat by invite key (only for group chat)
+
+**Route:** /chats/:id/join
+
+**Method:** GET
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| invite_key | <code>String</code> | |
+
+**Response:**
+
+* success 
+```
+{
+  "success": true
+  "chat": {
+    "id": 1234,
+    "is_direct_message": false,
+    "name": "My Chat Group",
+    "participants": [
+      {
+        "id": 1234,
+        "name": "Percy BB",
+        "avatar_url": "http://example.com/avatars/1/thumb.jpg",
+        "jid": "ee7ff143a2a549cb95cb24f758c55919@example.com"
+      },
+      ...
+    ],
+    "jid": "my_chat_group-65ec9a385ee540c892527bca5ca3f936@example.com",
+    "photo_url": "http://example.com/photos/1/thumb.jpg",
+    "is_having_battle": true,
+    "invite_key": '58f271380b86489ba147ed048939ff24',
+    "battles": [
+      {
+        "id": 1234,
+        "chat_id": 1234,
+        "current": true,
+        "started_at": 12569537329,
+        "ended_at": 12569637329,
+        "steps": {
+          "1234": 8000,
+          "2234": 3000,
+          "3244": 4000
+        },
+      },
+      ...
+    ]
+  }
+}
+```
+
+* fail
+```
+{
+  "success": false
+}
+```
+
+## Create Battle
+
+**Description:** Create a battle
+
+**Route:** /battles
+
+**Method:** POST
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| chat_id| <code>id</code> | |
+| started_at | <code>int</code> | timestamp|
+| ended_at| <code>int</code> | timestamp|
+
+**Response:**
+* success
+```
+{
+  "success": true,
+  "battle": {
+    "id": 1234,
+    "chat_id": 1234,
+    "current": true,
+    "started_at": 12569537329,
+    "ended_at": 12569637329,
+    "steps": {
+      "1234": 8000,
+      "2234": 3000,
+      "3244": 4000
+    }
+  }
+}
+```
+
+* fail
+```
+{
+  "success": false
 }
 ```
