@@ -320,6 +320,7 @@ modules:
     history_size: 50
     default_room_options:
       persistent: true
+      mam: true
   {%- if env['EJABBERD_MOD_MUC_ADMIN'] == "true" %}
   mod_muc_admin: {}
   {% endif %}
@@ -389,7 +390,8 @@ modules:
     {% endif %}
   mod_http_upload_quota:
     max_days: 10
-  mod_mam: {}
+  mod_mam:     
+    default: always
 
 ###   ============
 ###   HOST CONFIG

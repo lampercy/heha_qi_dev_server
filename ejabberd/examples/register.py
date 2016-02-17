@@ -9,9 +9,9 @@ class RegisterBot(sleekxmpp.ClientXMPP):
     def __init__(self, jid, password):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)
         self.register_plugin('xep_0077')
-        self.register_plugin('xep_0030') # Service Discovery
-        self.register_plugin('xep_0004') # Data forms
-        self.register_plugin('xep_0066') # Out-of-band Data
+        self.register_plugin('xep_0030')  # Service Discovery
+        self.register_plugin('xep_0004')  # Data forms
+        self.register_plugin('xep_0066')  # Out-of-band Data
 
         self['xep_0077'].force_registration = True
         self.add_event_handler("session_start", self.start, threaded=True)
@@ -32,8 +32,8 @@ class RegisterBot(sleekxmpp.ClientXMPP):
             resp.send(now=True)
             logging.info("Account created for %s!" % self.boundjid)
         except IqError as e:
-            logging.error("Could not register account: %s" %
-                    e.iq['error']['text'])
+            logging.error(
+                "Could not register account: %s" % e.iq['error']['text'])
             self.disconnect()
         except IqTimeout:
             logging.error("No response from server.")

@@ -1,4 +1,3 @@
-import sleekxmpp
 from sleekxmpp import ClientXMPP
 
 
