@@ -11,6 +11,7 @@ ejabberd:
     - EJABBERD_USERS=admin@example.com:1234 user_1@example.com:1234 user_2@example.com:1234 user_3@example.com:1234
     - EJABBERD_STARTTLS=false
     - EJABBERD_S2S_SSL=false
+    - EJABBERD_MOD_MUC_ADMIN=true
 
   volumes:
     - ./ejabberd.yml.tpl:/opt/ejabberd/conf/ejabberd.yml.tpl
